@@ -7,7 +7,6 @@ public class OrderItem {
     private int quantity;
     private double price;
 
-    // Constructor
     public OrderItem(MenuItem item, int quantity) {
 
         this.item = item;
@@ -15,22 +14,18 @@ public class OrderItem {
         this.price = item.getPrice();
     }
 
-    // Get food item
     public MenuItem getItem() {
         return item;
     }
 
-    // Get quantity
     public int getQuantity() {
         return quantity;
     }
 
-    // Get price
     public double getPrice() {
         return price;
     }
 
-    // Calculate subtotal
     public double getSubTotal() {
         return price * quantity;
     }

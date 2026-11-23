@@ -7,7 +7,6 @@ public class OrderStatusHistory {
     private String status;
     private String updateTime;
 
-    // Constructor
     public OrderStatusHistory(int orderId, String status,
                               String updateTime) {
 
@@ -16,22 +15,18 @@ public class OrderStatusHistory {
         this.updateTime = updateTime;
     }
 
-    // Get order ID
     public int getOrderId() {
         return orderId;
     }
 
-    // Get status
     public String getStatus() {
         return status;
     }
 
-    // Get update time
     public String getUpdateTime() {
         return updateTime;
     }
 
-    // Display order history
     public void displayHistory() {
 
         System.out.println(

@@ -1,4 +1,3 @@
-
 package concurrency;
 
 import model.Order;
@@ -17,7 +16,7 @@ public class OrderStatusNotifier {
 
         try {
 
-            while (order.getStatus() != expectedStatus) {
+            while (order != null && order.getOrderStatus() != expectedStatus) {
 
                 wait();
 

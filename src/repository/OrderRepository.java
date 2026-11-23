@@ -9,28 +9,23 @@ public class OrderRepository {
 
     private LinkedHashMap<Integer, Order> orders;
 
-    // Constructor
     public OrderRepository() {
         orders = new LinkedHashMap<Integer, Order>();
     }
 
-    // Add new order
     public void addOrder(Order order) {
         orders.put(order.getOrderId(), order);
     }
 
-    // Find order using order ID
     public Order getOrder(int orderId) {
         return orders.get(orderId);
     }
 
-    // Get all orders
     public ArrayList<Order> getAllOrders() {
 
         return new ArrayList<Order>(orders.values());
     }
 
-    // Get orders of a particular student
     public ArrayList<Order> getOrdersByStudent(int studentId) {
 
         ArrayList<Order> studentOrders = new ArrayList<Order>();
@@ -45,7 +40,6 @@ public class OrderRepository {
         return studentOrders;
     }
 
-    // Remove an order
     public boolean removeOrder(int orderId) {
 
         if (orders.containsKey(orderId)) {

@@ -1,17 +1,40 @@
 package console;
 
-import service.MenuService;
 import java.util.Scanner;
+import model.*;
+import service.*;
+import concurrency.KitchenQueue;
+import exception.EmptyCartException;
+import exception.PaymentFailedException;
+import exception.OrderNotFoundException;
 
 public class StudentMenu {
 
     private MenuService menuService;
     private Scanner sc;
+    private Student student;
 
-    public StudentMenu(MenuService menuService, Scanner sc) {
+    private Cart cart = new Cart();
+
+    private CartService cartService;
+    private OrderService orderService;
+    private TrackingService trackingService;
+    private KitchenQueue kitchenQueue;
+
+    public StudentMenu(MenuService menuService, Scanner sc,
+                       Student student,
+                       CartService cartService,
+                       OrderService orderService,
+                       TrackingService trackingService,
+                       KitchenQueue kitchenQueue) {
 
         this.menuService = menuService;
         this.sc = sc;
+        this.student = student;
+        this.cartService = cartService;
+        this.orderService = orderService;
+        this.trackingService = trackingService;
+        this.kitchenQueue = kitchenQueue;
     }
 
     public void displayMenu() {
@@ -21,16 +44,19 @@ public class StudentMenu {
         do {
 
             System.out.println("\n===== STUDENT DASHBOARD =====");
+            System.out.println("Welcome, " + student.getName());
 
             System.out.println("1. View Food Menu");
             System.out.println("2. Search Food");
             System.out.println("3. Sort Food by Price");
-            System.out.println("4. Logout");
+            System.out.println("4. Add Food to Cart");
+            System.out.println("5. View Cart");
+            System.out.println("6. Remove Item from Cart");
+            System.out.println("7. Place Order and Pay");
+            System.out.println("8. Track My Orders");
+            System.out.println("9. Logout");
 
-            System.out.print("Enter choice: ");
-
-            choice = sc.nextInt();
-            sc.nextLine();
+            choice = readInt("Enter choice: ");
 
             switch (choice) {
 
@@ -41,7 +67,6 @@ public class StudentMenu {
                 case 2:
 
                     System.out.print("Enter food name: ");
-
                     String name = sc.nextLine();
 
                     menuService.searchFood(name);
@@ -52,13 +77,133 @@ public class StudentMenu {
                     break;
 
                 case 4:
+
+                    menuService.displayMenu();
+
+                    int itemId = readInt("Enter food ID: ");
+                    int quantity = readInt("Enter quantity: ");
+
+                    try {
+
+                        MenuItem item =
+                                menuService.findFoodById(itemId);
+
+                        cartService.addToCart(
+                                cart,
+                                item,
+                                quantity
+                        );
+
+                    } catch (Exception e) {
+
+                        System.out.println(e.getMessage());
+
+                    }
+
+                    break;
+
+                case 5:
+
+                    cartService.showCart(cart);
+                    break;
+
+                case 6:
+
+                    cartService.showCart(cart);
+
+                    int removeId =
+                            readInt("Enter food ID to remove: ");
+
+                    cartService.removeFromCart(cart, removeId);
+                    break;
+
+                case 7:
+
+                    System.out.println("\n1. Cash at Counter");
+
+                    int paymentChoice =
+                            readInt("Choose payment method: ");
+
+                    if (paymentChoice == 1) {
+
+                        try {
+
+                            Order order = orderService.placeOrder(
+                                    student.getId(),
+                                    cart,
+                                    "CASH"
+                            );
+
+                            kitchenQueue.addOrder(order);
+
+                        } catch (EmptyCartException |
+                                 PaymentFailedException e) {
+
+                            System.out.println(e.getMessage());
+
+                        }
+
+                    } else {
+
+                        System.out.println("Invalid payment method.");
+
+                    }
+
+                    break;
+
+                case 8:
+
+                    System.out.println("\n===== MY ORDERS =====");
+
+                    for (Order order :
+                            orderService.getOrdersByStudent(
+                                    student.getId())) {
+
+                        try {
+
+                            trackingService.trackOrder(
+                                    order.getOrderId()
+                            );
+
+                        } catch (OrderNotFoundException e) {
+
+                            System.out.println(e.getMessage());
+
+                        }
+                    }
+
+                    break;
+
+                case 9:
+
                     System.out.println("Logging out...");
                     break;
 
                 default:
+
                     System.out.println("Invalid choice!");
+
             }
 
-        } while (choice != 4);
+        } while (choice != 9);
+
+    }
+
+    private int readInt(String message) {
+
+        while (true) {
+
+            try {
+
+                System.out.print(message);
+
+                return Integer.parseInt(sc.nextLine());
+
+            } catch (NumberFormatException e) {
+
+                System.out.println("Please enter a valid number.");
+
+            }
+        }
     }
 }

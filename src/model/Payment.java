@@ -9,7 +9,6 @@ public class Payment {
     private String paymentMethod;
     private String paymentStatus;
 
-    // Constructor
     public Payment(int paymentId, int orderId, double amount,
                    String paymentMethod, String paymentStatus) {
 
@@ -20,32 +19,26 @@ public class Payment {
         this.paymentStatus = paymentStatus;
     }
 
-    // Get payment ID
     public int getPaymentId() {
         return paymentId;
     }
 
-    // Get order ID
     public int getOrderId() {
         return orderId;
     }
 
-    // Get amount
     public double getAmount() {
         return amount;
     }
 
-    // Get payment method
     public String getPaymentMethod() {
         return paymentMethod;
     }
 
-    // Get payment status
     public String getPaymentStatus() {
         return paymentStatus;
     }
 
-    // Display payment details
     public void displayPayment() {
 
         System.out.println("\n------- PAYMENT DETAILS -------");

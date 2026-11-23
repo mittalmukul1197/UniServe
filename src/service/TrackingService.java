@@ -16,7 +16,6 @@ public class TrackingService {
 
     private ArrayList<OrderStatusHistory> historyList;
 
-    // Constructor
     public TrackingService(OrderRepository orderRepository) {
 
         this.orderRepository = orderRepository;
@@ -24,7 +23,6 @@ public class TrackingService {
         historyList = new ArrayList<OrderStatusHistory>();
     }
 
-    // Update order status
     public void updateStatus(int orderId, String newStatus)
             throws OrderNotFoundException {
 
@@ -52,7 +50,6 @@ public class TrackingService {
         System.out.println("Order status updated successfully.");
     }
 
-    // Track order
     public void trackOrder(int orderId)
             throws OrderNotFoundException {
 
@@ -77,7 +74,6 @@ public class TrackingService {
         }
     }
 
-    // Get complete order history
     public ArrayList<OrderStatusHistory> getHistoryList() {
 
         return historyList;

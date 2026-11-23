@@ -6,24 +6,20 @@ public class DigitalToken {
     private int tokenNumber;
     private int orderId;
 
-    // Constructor
     public DigitalToken(int tokenNumber, int orderId) {
 
         this.tokenNumber = tokenNumber;
         this.orderId = orderId;
     }
 
-    // Get token number
     public int getTokenNumber() {
         return tokenNumber;
     }
 
-    // Get order ID
     public int getOrderId() {
         return orderId;
     }
 
-    // Display token details
     public void displayToken() {
 
         System.out.println("\n================================");

@@ -1,4 +1,3 @@
-
 package model;
 
 import java.util.ArrayList;
@@ -12,7 +11,6 @@ public class Order {
     private String status;
     private DigitalToken token;
 
-    // Constructor
     public Order(int orderId, int studentId,
                  ArrayList<OrderItem> items,
                  double totalAmount, String status,
@@ -26,42 +24,49 @@ public class Order {
         this.token = token;
     }
 
-    // Get order ID
     public int getOrderId() {
         return orderId;
     }
 
-    // Get student ID
     public int getStudentId() {
         return studentId;
     }
 
-    // Get order items
     public ArrayList<OrderItem> getItems() {
         return items;
     }
 
-    // Get total amount
     public double getTotalAmount() {
         return totalAmount;
     }
 
-    // Get order status
     public String getStatus() {
         return status;
     }
 
-    // Get digital token
+    public OrderStatus getOrderStatus() {
+        if (status == null) {
+            return null;
+        }
+        try {
+            return OrderStatus.valueOf(status.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
     public DigitalToken getToken() {
         return token;
     }
 
-    // Update order status
     public void setStatus(String status) {
         this.status = status;
     }
 
-    // Display complete order
+    public void setStatus(OrderStatus status) {
+        this.status = status != null ? status.name() : null;
+    }
+
     public void displayOrder() {
 
         System.out.println("\n========== ORDER DETAILS ==========");
