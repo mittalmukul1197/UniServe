@@ -9,7 +9,7 @@ public class ConsoleApp {
 
     KitchenMenu kitchen = new KitchenMenu();
 
-    public void startApplication() {
+    public void     startApplication() {
 
         int choice;
 
