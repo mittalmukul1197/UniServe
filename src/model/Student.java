@@ -6,9 +6,8 @@ public class Student extends User {
     private String course;
     private int year;
 
-    public Student(int id, String name, String email,
-                   String password, String studentId,
-                   String course, int year) {
+    public Student(int id, String name, String email,String password, String studentId,
+        String course, int year) {
 
         super(id, name, email, password);
 

@@ -14,22 +14,20 @@ public class PaymentService {
     }
 
     public Payment makePayment(int orderId, double amount,
-                               String method)
+            String method)
             throws PaymentFailedException {
 
         if (amount <= 0) {
             throw new PaymentFailedException(
-                "Invalid payment amount."
-            );
+                    "Invalid payment amount.");
         }
 
         Payment payment = new Payment(
-            IdGenerator.getPaymentId(),
-            orderId,
-            amount,
-            method,
-            "SUCCESS"
-        );
+                IdGenerator.getPaymentId(),
+                orderId,
+                amount,
+                method,
+                "SUCCESS");
 
         paymentRepository.addPayment(payment);
 
