@@ -10,7 +10,7 @@ public class ConsoleApp {
 
     private Scanner sc = new Scanner(System.in);
 
-    public void startApplication() {
+    public void     startApplication() {
 
         UserRepository userRepository = new UserRepository();
         MenuRepository menuRepository = new MenuRepository();

@@ -18,8 +18,7 @@ public class KitchenMenu {
     private boolean workersStarted = false;
 
     public KitchenMenu(KitchenQueue queue,
-                       OrderRepository orderRepository,
-                       Scanner scanner) {
+                OrderRepository orderRepository,Scanner scanner) {
 
         this.queue = queue;
         this.orderRepository = orderRepository;

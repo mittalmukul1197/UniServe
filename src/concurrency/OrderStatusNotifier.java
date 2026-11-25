@@ -15,7 +15,7 @@ public class OrderStatusNotifier {
             Order order, OrderStatus expectedStatus) {
 
         try {
-
+                
             while (order != null && order.getOrderStatus() != expectedStatus) {
 
                 wait();
