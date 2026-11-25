@@ -22,11 +22,11 @@ public class StudentMenu {
     private KitchenQueue kitchenQueue;
 
     public StudentMenu(MenuService menuService, Scanner sc,
-                       Student student,
-                       CartService cartService,
-                       OrderService orderService,
-                       TrackingService trackingService,
-                       KitchenQueue kitchenQueue) {
+            Student student,
+            CartService cartService,
+            OrderService orderService,
+            TrackingService trackingService,
+            KitchenQueue kitchenQueue) {
 
         this.menuService = menuService;
         this.sc = sc;
@@ -47,14 +47,12 @@ public class StudentMenu {
             System.out.println("Welcome, " + student.getName());
 
             System.out.println("1. View Food Menu");
-            System.out.println("2. Search Food");
-            System.out.println("3. Sort Food by Price");
-            System.out.println("4. Add Food to Cart");
-            System.out.println("5. View Cart");
-            System.out.println("6. Remove Item from Cart");
-            System.out.println("7. Place Order and Pay");
-            System.out.println("8. Track My Orders");
-            System.out.println("9. Logout");
+            System.out.println("2. Add Food to Cart");
+            System.out.println("3. View Cart");
+            System.out.println("4. Remove Item from Cart");
+            System.out.println("5. Place Order and Pay");
+            System.out.println("6. Track My Orders");
+            System.out.println("7. Logout");
 
             choice = readInt("Enter choice: ");
 
@@ -66,18 +64,6 @@ public class StudentMenu {
 
                 case 2:
 
-                    System.out.print("Enter food name: ");
-                    String name = sc.nextLine();
-
-                    menuService.searchFood(name);
-                    break;
-
-                case 3:
-                    menuService.sortByPrice();
-                    break;
-
-                case 4:
-
                     menuService.displayMenu();
 
                     int itemId = readInt("Enter food ID: ");
@@ -85,14 +71,12 @@ public class StudentMenu {
 
                     try {
 
-                        MenuItem item =
-                                menuService.findFoodById(itemId);
+                        MenuItem item = menuService.findFoodById(itemId);
 
                         cartService.addToCart(
                                 cart,
                                 item,
-                                quantity
-                        );
+                                quantity);
 
                     } catch (Exception e) {
 
@@ -102,27 +86,25 @@ public class StudentMenu {
 
                     break;
 
-                case 5:
+                case 3:
 
                     cartService.showCart(cart);
                     break;
 
-                case 6:
+                case 4:
 
                     cartService.showCart(cart);
 
-                    int removeId =
-                            readInt("Enter food ID to remove: ");
+                    int removeId = readInt("Enter food ID to remove: ");
 
                     cartService.removeFromCart(cart, removeId);
                     break;
 
-                case 7:
+                case 5:
 
                     System.out.println("\n1. Cash at Counter");
 
-                    int paymentChoice =
-                            readInt("Choose payment method: ");
+                    int paymentChoice = readInt("Choose payment method: ");
 
                     if (paymentChoice == 1) {
 
@@ -131,13 +113,11 @@ public class StudentMenu {
                             Order order = orderService.placeOrder(
                                     student.getId(),
                                     cart,
-                                    "CASH"
-                            );
+                                    "CASH");
 
                             kitchenQueue.addOrder(order);
 
-                        } catch (EmptyCartException |
-                                 PaymentFailedException e) {
+                        } catch (EmptyCartException | PaymentFailedException e) {
 
                             System.out.println(e.getMessage());
 
@@ -151,19 +131,17 @@ public class StudentMenu {
 
                     break;
 
-                case 8:
+                case 6:
 
                     System.out.println("\n===== MY ORDERS =====");
 
-                    for (Order order :
-                            orderService.getOrdersByStudent(
-                                    student.getId())) {
+                    for (Order order : orderService.getOrdersByStudent(
+                            student.getId())) {
 
                         try {
 
                             trackingService.trackOrder(
-                                    order.getOrderId()
-                            );
+                                    order.getOrderId());
 
                         } catch (OrderNotFoundException e) {
 
@@ -174,7 +152,7 @@ public class StudentMenu {
 
                     break;
 
-                case 9:
+                case 7:
 
                     System.out.println("Logging out...");
                     break;
@@ -185,7 +163,7 @@ public class StudentMenu {
 
             }
 
-        } while (choice != 9);
+        } while (choice != 7);
 
     }
 

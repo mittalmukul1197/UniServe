@@ -22,8 +22,7 @@ public class MenuService {
         int id = menuRepository.generateId();
 
         MenuItem item = new MenuItem(
-                id, name, price, category, true
-        );
+                id, name, price, category, true);
 
         menuRepository.addItem(item);
 
@@ -45,45 +44,6 @@ public class MenuService {
         }
     }
 
-    public void searchFood(String name) {
-
-        ArrayList<MenuItem> menu = menuRepository.getAllItems();
-
-        boolean found = false;
-
-        for (MenuItem item : menu) {
-
-            if (item.getName().toLowerCase()
-                    .contains(name.toLowerCase())
-                    && item.isAvailable()) {
-
-                System.out.println(item);
-                found = true;
-            }
-        }
-
-        if (!found) {
-
-            System.out.println("Food item not found!");
-        }
-    }
-
-    public void sortByPrice() {
-
-        ArrayList<MenuItem> menu = menuRepository.getAllItems();
-
-        Collections.sort(menu, new Comparator<MenuItem>() {
-
-            @Override
-            public int compare(MenuItem a, MenuItem b) {
-
-                return Double.compare(a.getPrice(), b.getPrice());
-            }
-        });
-
-        displayMenu();
-    }
-
     public MenuItem findFoodById(int id) {
 
         return menuRepository.findById(id);
@@ -98,8 +58,7 @@ public class MenuService {
             menuRepository.removeItem(id);
 
             System.out.println("Food item removed!");
-        }
-        else {
+        } else {
 
             System.out.println("Invalid food ID!");
         }
@@ -114,8 +73,7 @@ public class MenuService {
             item.setPrice(price);
 
             System.out.println("Price updated!");
-        }
-        else {
+        } else {
 
             System.out.println("Food item not found!");
         }

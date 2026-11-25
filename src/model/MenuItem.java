@@ -50,7 +50,6 @@ public class MenuItem {
         this.available = available;
     }
 
-    @Override
     public String toString() {
 
         return "ID: " + id +
@@ -59,4 +58,6 @@ public class MenuItem {
                 " | Category: " + category +
                 " | Available: " + available;
     }
+
+    
 }
