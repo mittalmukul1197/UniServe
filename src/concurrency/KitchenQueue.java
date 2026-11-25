@@ -16,7 +16,7 @@ public class KitchenQueue {
     private List<Order> allOrders =
             new ArrayList<Order>();
 
-    public void addOrder(Order order) {
+    public void  addOrder(Order order) {
 
         try {
 

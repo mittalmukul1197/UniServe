@@ -84,6 +84,11 @@ public class MenuService {
         displayMenu();
     }
 
+    public MenuItem findFoodById(int id) {
+
+        return menuRepository.findById(id);
+    }
+
     public void removeFood(int id) {
 
         MenuItem item = menuRepository.findById(id);

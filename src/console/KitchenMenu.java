@@ -1,62 +1,60 @@
-
 package console;
 
 import concurrency.KitchenQueue;
-import concurrency.OrderStatusNotifier;
 import concurrency.KitchenWorker;
-import service.ReportService;
+import concurrency.OrderStatusNotifier;
+import model.Order;
+import repository.OrderRepository;
+
+import java.util.List;
+import java.util.Scanner;
 
 public class KitchenMenu {
 
-    InputHandler input = new InputHandler();
-
-    DisplayFormatter display = new DisplayFormatter();
-
-    KitchenQueue queue = new KitchenQueue();
-
-    OrderStatusNotifier notifier = new OrderStatusNotifier();
-
-    ReportService report = new ReportService();
+    private KitchenQueue queue;
+    private OrderRepository orderRepository;
+    private Scanner scanner;
 
     private boolean workersStarted = false;
 
-    private Thread worker1;
+    public KitchenMenu(KitchenQueue queue,
+                OrderRepository orderRepository,Scanner scanner) {
 
-    private Thread worker2;
-
-
-    // Start Kitchen Workers
-
-    public void startWorkers() {
-
-        if (!workersStarted) {
-
-            worker1 = new Thread(
-                new KitchenWorker(queue, notifier, "Worker 1")
-            );
-
-            worker2 = new Thread(
-                new KitchenWorker(queue, notifier, "Worker 2")
-            );
-
-            worker1.setDaemon(true);
-
-            worker2.setDaemon(true);
-
-            worker1.start();
-
-            worker2.start();
-
-            workersStarted = true;
-
-            System.out.println("Kitchen workers started.");
-
-        }
+        this.queue = queue;
+        this.orderRepository = orderRepository;
+        this.scanner = scanner;
     }
 
+    // Start kitchen workers only once
+    public void startWorkers() {
 
-    // Display Kitchen Menu
+        if (workersStarted) {
+            return;
+        }
 
+        OrderStatusNotifier notifier = new OrderStatusNotifier();
+
+        KitchenWorker worker1 =
+                new KitchenWorker(queue, notifier, "Worker 1");
+
+        KitchenWorker worker2 =
+                new KitchenWorker(queue, notifier, "Worker 2");
+
+        Thread t1 = new Thread(worker1);
+        Thread t2 = new Thread(worker2);
+
+        t1.setDaemon(true);
+        t2.setDaemon(true);
+
+        t1.start();
+        t2.start();
+
+        workersStarted = true;
+
+        System.out.println("Kitchen workers started successfully!");
+    }
+
+    // Display kitchen dashboard
     public void showKitchenMenu() {
 
         startWorkers();
@@ -64,62 +62,84 @@ public class KitchenMenu {
         int choice;
 
         do {
-
-            display.showHeading("KITCHEN DASHBOARD");
-
-            System.out.println("1. View Incoming Orders");
-
-            System.out.println("2. Add Sample Order");
-
-            System.out.println("3. View Sales Report");
-
+            System.out.println("\n========== KITCHEN DASHBOARD ==========");
+            System.out.println("1. View Pending Orders");
+            System.out.println("2. View All Orders");
+            System.out.println("3. Sales Report");
             System.out.println("4. Back");
+            System.out.print("Enter your choice: ");
 
-            choice = input.getNumber();
+            try {
+                choice = Integer.parseInt(scanner.nextLine());
 
-            switch (choice) {
+                switch (choice) {
 
-                case 1:
+                    case 1:
+                        System.out.println("\n--- PENDING ORDERS ---");
+                        queue.displayOrders();
+                        break;
 
-                    queue.displayOrders();
+                    case 2:
+                        viewAllOrders();
+                        break;
 
-                    break;
+                    case 3:
+                        showSalesReport();
+                        break;
 
-                case 2:
+                    case 4:
+                        System.out.println("Returning to main menu...");
+                        break;
 
-                    System.out.println("Connect student order module to add real orders.");
+                    default:
+                        System.out.println("Invalid choice!");
+                }
 
-                    break;
-
-                case 3:
-
-                    report.showReport(queue.getAllOrders());
-
-                    break;
-
-                case 4:
-
-                    System.out.println("Returning to Main Menu...");
-
-                    break;
-
-                default:
-
-                    System.out.println("Invalid choice!");
-
+            } catch (NumberFormatException e) {
+                choice = 0;
+                System.out.println("Please enter a valid number!");
             }
 
         } while (choice != 4);
-
     }
 
+    // Display all orders
+    private void viewAllOrders() {
 
-    // Get Kitchen Queue
+        System.out.println("\n========== ALL ORDERS ==========");
 
-    public KitchenQueue getQueue() {
+        List<Order> orders = orderRepository.getAllOrders();
 
-        return queue;
+        if (orders == null || orders.isEmpty()) {
+            System.out.println("No orders found.");
+            return;
+        }
 
+        for (Order order : orders) {
+            order.displayOrder();
+            System.out.println("-----------------------------");
+        }
     }
 
+    // Basic sales report
+    private void showSalesReport() {
+
+        System.out.println("\n========== SALES REPORT ==========");
+
+        List<Order> orders = orderRepository.getAllOrders();
+
+        if (orders == null || orders.isEmpty()) {
+            System.out.println("No orders available.");
+            return;
+        }
+
+        System.out.println("Total Orders: " + orders.size());
+
+        System.out.println("\nOrder Summary:");
+
+        for (Order order : orders) {
+            order.displayOrder();
+            System.out.println("-----------------------------");
+        }
+    }
 }
