@@ -1,9 +1,6 @@
 package repository;
-
 import java.util.ArrayList;
-
 import model.Payment;
-
 public class PaymentRepository {
 
     private ArrayList<Payment> payments;

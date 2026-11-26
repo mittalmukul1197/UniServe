@@ -10,7 +10,7 @@ public class ConsoleApp {
 
     private Scanner sc = new Scanner(System.in);
 
-    public void     startApplication() {
+    public void startApplication() {
 
         UserRepository userRepository = new UserRepository();
         MenuRepository menuRepository = new MenuRepository();
@@ -27,19 +27,16 @@ public class ConsoleApp {
                 orderRepository,
                 cartService,
                 paymentService,
-                tokenService
-        );
+                tokenService);
 
-        TrackingService trackingService =
-                new TrackingService(orderRepository);
+        TrackingService trackingService = new TrackingService(orderRepository);
 
         KitchenQueue kitchenQueue = new KitchenQueue();
 
         KitchenMenu kitchenMenu = new KitchenMenu(
                 kitchenQueue,
                 orderRepository,
-                sc
-        );
+                sc);
 
         Staff staff = new Staff(
                 userRepository.generateId(),
@@ -47,10 +44,18 @@ public class ConsoleApp {
                 "staff@gmail.com",
                 "1234",
                 "EMP101",
-                "Manager"
-        );
-
+                "Manager");
         userRepository.addUser(staff);
+
+        Student pstudent = new Student(
+                userRepository.generateId(),
+                "student",
+                "student@gmail.com",
+                "student",
+                "101",
+                "CSE",
+                2025);
+        userRepository.addUser(pstudent);
 
         menuService.addFood("Veg Burger", 80, Category.FAST_FOOD);
         menuService.addFood("Cold Coffee", 60, Category.BEVERAGES);
@@ -100,8 +105,7 @@ public class ConsoleApp {
                             password,
                             studentId,
                             course,
-                            year
-                    );
+                            year);
 
                     break;
 
@@ -113,8 +117,7 @@ public class ConsoleApp {
                     System.out.print("Enter password: ");
                     password = sc.nextLine();
 
-                    User studentUser =
-                            authService.login(email, password);
+                    User studentUser = authService.login(email, password);
 
                     if (studentUser instanceof Student) {
 
@@ -127,16 +130,14 @@ public class ConsoleApp {
                                 cartService,
                                 orderService,
                                 trackingService,
-                                kitchenQueue
-                        );
+                                kitchenQueue);
 
                         studentMenu.displayMenu();
 
                     } else if (studentUser != null) {
 
                         System.out.println(
-                                "This account is not a student account."
-                        );
+                                "This account is not a student account.");
                     }
 
                     break;
@@ -149,21 +150,18 @@ public class ConsoleApp {
                     System.out.print("Enter password: ");
                     password = sc.nextLine();
 
-                    User staffUser =
-                            authService.login(email, password);
+                    User staffUser = authService.login(email, password);
 
                     if (staffUser instanceof Staff) {
 
-                        StaffMenu staffMenu =
-                                new StaffMenu(menuService, sc);
+                        StaffMenu staffMenu = new StaffMenu(menuService, sc);
 
                         staffMenu.displayMenu();
 
                     } else if (staffUser != null) {
 
                         System.out.println(
-                                "This account is not a staff account."
-                        );
+                                "This account is not a staff account.");
                     }
 
                     break;
@@ -177,8 +175,7 @@ public class ConsoleApp {
                 case 5:
 
                     System.out.println(
-                            "Thank you for using our application!"
-                    );
+                            "Thank you for using our application!");
 
                     break;
 
